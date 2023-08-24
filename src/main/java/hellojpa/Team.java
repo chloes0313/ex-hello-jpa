@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+//@Entity
 public class Team extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "TEAM_ID")
