@@ -1,12 +1,14 @@
 package hellojpa;
 
 import lombok.Data;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
-//@Entity
-public class Member extends BaseEntity {
+@Entity
+public class Member {
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -14,14 +16,19 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Team team;
+    //Period : 기간
+    @Embedded
+    private Period workPeriod;
 
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+    //Address : 주소
+    @Embedded
+    private Address homeAddress;
 
-    @Lob
-    private String description;
-
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+            @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE"))
+    })
+    private Address workAddress;
 }

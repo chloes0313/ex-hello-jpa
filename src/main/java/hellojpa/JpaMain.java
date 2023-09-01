@@ -16,28 +16,29 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Address address = new Address("city","street","zipcode");
+            Address address2 = new Address(address.getCity(), address.getStreet(), address.getZipcode());;
 
-            Parent parent = new Parent();
+            Member member = new Member();
+            member.setUsername("Chloe");
+            member.setHomeAddress(new Address("city","street","zipcode"));
+            member.setWorkPeriod(new Period());
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            em.persist(member);
+            int a = 10;
+            int b = 10;
 
-            parent.addChild(child1);
-            parent.addChild(child2);
+            String aa = "new";
+            String bb = aa;
 
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            em.remove(findParent);
-
-//            em.persist(child1);
-//            em.persist(child2);
+            System.out.println(a == b);
+            System.out.println(address == address2);
+            System.out.println(address.equals(address2));
+            System.out.println(aa == bb);
+            System.out.println(aa.equals(bb));
 
             System.out.println("============================");
-            tx.commit();
+//            tx.commit();
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();
@@ -58,11 +59,5 @@ public class JpaMain {
     private static void printMember (Member member) {
         System.out.println("member = " + member.getUsername());
     }
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username = " + username);
 
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
-    }
 }

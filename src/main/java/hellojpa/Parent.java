@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+//@Entity
 public class Parent {
     @Id
     @GeneratedValue

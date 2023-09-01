@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@Entity
+//@Entity
 public class Child {
     @Id
     @GeneratedValue
