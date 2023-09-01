@@ -1,10 +1,9 @@
 package hellojpa;
 
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -16,29 +15,30 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Address address = new Address("city","street","zipcode");
-            Address address2 = new Address(address.getCity(), address.getStreet(), address.getZipcode());;
 
             Member member = new Member();
             member.setUsername("Chloe");
-            member.setHomeAddress(new Address("city","street","zipcode"));
-            member.setWorkPeriod(new Period());
+            member.setHomeAddress(new Address("homeCity","homeStreet","00000"));
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("국물닭발");
 
+            AddressEntity address1 = new AddressEntity("oldCity1", "oldStreet1", "10000");
+            AddressEntity address2 = new AddressEntity("oldCity2", "oldStreet2", "10001");
+            member.getAddressHistory().add(address1);
+            member.getAddressHistory().add(address2);
             em.persist(member);
-            int a = 10;
-            int b = 10;
 
-            String aa = "new";
-            String bb = aa;
+            em.flush();
+            em.clear();
 
-            System.out.println(a == b);
-            System.out.println(address == address2);
-            System.out.println(address.equals(address2));
-            System.out.println(aa == bb);
-            System.out.println(aa.equals(bb));
-
+            Member findMember = em.find(Member.class, member.getId());
+            //address_history 수정
+//            findMember.getAddressHistory().remove(new AddressEntity("oldCity1", "oldStreet1", "10000"));
+//            findMember.getAddressHistory().add(new AddressEntity("newCity1", "newStreet1", "10000"));
             System.out.println("============================");
-//            tx.commit();
+
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();

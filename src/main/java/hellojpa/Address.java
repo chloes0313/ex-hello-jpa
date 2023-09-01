@@ -1,7 +1,5 @@
 package hellojpa;
 
-import lombok.Data;
-
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
