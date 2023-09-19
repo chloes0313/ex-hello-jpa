@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,28 +16,12 @@ public class JpaMain {
         tx.begin();
 
         try {
+            List<Member> resultList = em.createQuery("select m from Member m where m.username like '%chloe%'", Member.class)
+                    .getResultList();
 
-            Member member = new Member();
-            member.setUsername("Chloe");
-            member.setHomeAddress(new Address("homeCity","homeStreet","00000"));
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("국물닭발");
-
-            AddressEntity address1 = new AddressEntity("oldCity1", "oldStreet1", "10000");
-            AddressEntity address2 = new AddressEntity("oldCity2", "oldStreet2", "10001");
-            member.getAddressHistory().add(address1);
-            member.getAddressHistory().add(address2);
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-            //address_history 수정
-//            findMember.getAddressHistory().remove(new AddressEntity("oldCity1", "oldStreet1", "10000"));
-//            findMember.getAddressHistory().add(new AddressEntity("newCity1", "newStreet1", "10000"));
-            System.out.println("============================");
+            for(Member mebmer : resultList) {
+                System.out.println("member : "+mebmer.getUsername());
+            }
 
             tx.commit();
         } catch (Exception e) {
